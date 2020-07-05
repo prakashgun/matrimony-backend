@@ -1,0 +1,65 @@
+###########
+# BUILDER #
+###########
+
+# Pull official base image
+FROM python:3.8.3-alpine as builder
+
+# Set work directory
+WORKDIR /usr/src/app
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Install psycopg2 dependencies
+RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
+
+# Copy project
+COPY . /usr/src/app/
+
+# Install dependencies
+RUN pip install --upgrade pip
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+
+#########
+# FINAL #
+#########
+
+# Pull official base image
+FROM python:3.8.3-alpine
+
+# Create directory for the app user
+RUN mkdir -p /home/app
+
+# Create the app user
+RUN addgroup -S app && adduser -S app -G app
+
+# Create the appropriate directories
+ENV HOME=/home/app
+ENV APP_HOME=/home/app/web
+RUN mkdir $APP_HOME
+RUN mkdir $APP_HOME/static
+WORKDIR $APP_HOME
+
+# Install dependencies
+RUN apk update && apk add libpq
+COPY --from=builder /usr/src/app/wheels /wheels
+COPY --from=builder /usr/src/app/requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install --no-cache /wheels/*
+
+# Copy entrypoint
+COPY ./entrypoint.sh $APP_HOME
+
+# Copy project
+COPY . $APP_HOME
+
+## Chown all files to app user
+#RUN chown -R app:app $APP_HOME
+#
+## Change to the app user
+#USER app
+
+# Run entrypoint
+ENTRYPOINT ["/home/app/web/entrypoint.sh"]
