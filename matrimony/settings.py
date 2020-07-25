@@ -36,6 +36,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third party
+    'oauth2_provider',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -120,3 +124,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': {
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    }
+}
