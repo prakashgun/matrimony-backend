@@ -39,7 +39,7 @@ RUN addgroup -S app && adduser -S app -G app
 ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
 RUN mkdir $APP_HOME
-RUN mkdir $APP_HOME/static
+RUN mkdir $APP_HOME/staticfiles
 WORKDIR $APP_HOME
 
 # Install dependencies
