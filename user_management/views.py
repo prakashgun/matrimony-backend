@@ -1,13 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
-from rest_framework import generics, permissions
+from rest_framework import generics
 
-from .serializers import UserSerializer, GroupSerializer
 from .permissions import IsPostOrIsAuthenticated
+from .serializers import UserSerializer, GroupSerializer
 
 
 class UserList(generics.ListCreateAPIView):
-    authentication_classes = []
     permission_classes = [IsPostOrIsAuthenticated]
 
     queryset = get_user_model().objects.all()
