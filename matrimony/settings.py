@@ -37,12 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # App
-    'user_management',
-
     # Third party
     'oauth2_provider',
-    'rest_framework'
+    'rest_framework',
+
+    # App
+    'user_management',
+    'profile_management'
 ]
 
 MIDDLEWARE = [
