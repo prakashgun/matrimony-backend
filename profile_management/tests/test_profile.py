@@ -23,6 +23,10 @@ class Utilities:
                                      email='test@example.com')
 
     @staticmethod
+    def detail_url(profile_id):
+        return reverse('profile_management:profile-detail', args=[profile_id])
+
+    @staticmethod
     def sample_profile(user, **params):
         marital_status = models.MaritalStatus.objects.create(
             name="Never Married"
@@ -185,4 +189,12 @@ class PrivateProfileTests(TestCase):
         serializer = serializers.ProfileSerializer(profiles, many=True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
+
+    def test_profile_detail(self):
+        profile = Utilities.sample_profile(user=self.user)
+
+        res = self.client.get(Utilities.detail_url(profile.id))
+        serializer = serializers.ProfileSerializer(profile)
+
         self.assertEqual(res.data, serializer.data)
