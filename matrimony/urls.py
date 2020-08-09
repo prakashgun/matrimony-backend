@@ -21,4 +21,6 @@ urlpatterns = [
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     path('user-management/',
          include('user_management.urls', namespace='user_management')),
+    path('profile-management/',
+         include('profile_management.urls', namespace='profile_management')),
 ]

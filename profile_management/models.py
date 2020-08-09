@@ -230,6 +230,16 @@ class Profile(models.Model):
     citizenship = models.ForeignKey(
         Country, on_delete=models.CASCADE,
         related_name='citizenship_profile_set')
+    body_type = models.ForeignKey(
+        BodyType,
+        on_delete=models.CASCADE,
+        blank=True, null=True,
+        related_name='body_type_profile_set')
+    complexion = models.ForeignKey(
+        Complexion,
+        on_delete=models.CASCADE,
+        blank=True, null=True,
+        related_name='complexion_profile_set')
     eating_habit = models.ForeignKey(
         EatingHabit, on_delete=models.CASCADE,
         blank=True, null=True,
@@ -242,6 +252,26 @@ class Profile(models.Model):
         SmokingHabit, on_delete=models.CASCADE,
         blank=True, null=True,
         related_name='smoking_habit_profile_set')
+    religion = models.ForeignKey(
+        Religion, on_delete=models.CASCADE,
+        blank=True, null=True,
+        related_name='religion_profile_set')
+    caste = models.ForeignKey(
+        Caste, on_delete=models.CASCADE,
+        blank=True, null=True,
+        related_name='caste_profile_set')
+    star = models.ForeignKey(
+        Star, on_delete=models.CASCADE,
+        blank=True, null=True,
+        related_name='star_profile_set')
+    raasi = models.ForeignKey(
+        Raasi, on_delete=models.CASCADE,
+        blank=True, null=True,
+        related_name='raasi_profile_set')
+    dosham = models.ForeignKey(
+        Dosham, on_delete=models.CASCADE,
+        blank=True, null=True,
+        related_name='dosham_profile_set')
     education = models.ForeignKey(
         Education, on_delete=models.CASCADE,
         blank=True, null=True,
