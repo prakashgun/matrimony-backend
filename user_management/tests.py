@@ -78,7 +78,7 @@ class UserPublicApiTest(TestCase):
     def test_validate_username(self):
         """Validate that username is ten digit"""
         payload = {
-            'username': '987654321',  # 9 digit number
+            'username': '',
             'password': 'test',
             'email': 'test@example.com'
         }
