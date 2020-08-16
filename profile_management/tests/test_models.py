@@ -88,6 +88,95 @@ class ModelTests(TestCase):
             name="Middle Class"
         )
 
+        self.profile = models.Profile.objects.create(
+            user=get_user_model().objects.create(
+                username='0123456789', password='test2',
+                email='test2@example.com'
+            ),
+            dob=datetime.strptime('1995-08-11', '%Y-%m-%d').date(),
+            about='Manager in Chennai',
+            height=182,
+            weight=70,
+            gender='m',
+            marital_status=self.marital_status,
+            mother_tongue=self.language,
+            physical_status=self.physical_status,
+            created_by=self.created_by,
+            eating_habit=self.eating_habit,
+            drinking_habit=self.drinking_habit,
+            smoking_habit=self.smoking_habit,
+            education=self.education,
+            education_institution='IIM',
+            occupation=self.occupation,
+            occupation_in_detail='Manager',
+            organization='Infosys',
+            employed_in=self.employed_in,
+            currency_type=self.currency_type,
+            annual_income=10,
+            country=self.country,
+            state=self.state,
+            city=self.city,
+            citizenship=self.country,
+            family_value=self.family_value,
+            family_type=self.family_type,
+            family_status=self.family_status,
+            father_occupation=self.occupation,
+            mother_occupation=self.occupation,
+            no_of_brothers=1,
+            brothers_married=None,
+            no_of_sisters=1,
+            sisters_married=None,
+            ancestral_origin='Parsi',
+            about_family='Middle class family staying in Chennai'
+        )
+
+        self.profile2 = models.Profile.objects.create(
+            user=get_user_model().objects.create(
+                username='9876543210', password='test',
+                email='test@example.com'
+            ),
+            dob=datetime.strptime('1995-08-11', '%Y-%m-%d').date(),
+            about='Software Engineer working in Bangalore',
+            height=182,
+            weight=70,
+            gender='f',
+            marital_status=self.marital_status,
+            mother_tongue=self.language,
+            physical_status=self.physical_status,
+            created_by=self.created_by,
+            eating_habit=self.eating_habit,
+            drinking_habit=self.drinking_habit,
+            smoking_habit=self.smoking_habit,
+            education=self.education,
+            education_institution='CMS College of Science and Commerce',
+            occupation=self.occupation,
+            occupation_in_detail='Software Programmer',
+            organization='Spi Global',
+            employed_in=self.employed_in,
+            currency_type=self.currency_type,
+            annual_income=10,
+            country=self.country,
+            state=self.state,
+            city=self.city,
+            citizenship=self.country,
+            family_value=self.family_value,
+            family_type=self.family_type,
+            family_status=self.family_status,
+            father_occupation=self.occupation,
+            mother_occupation=self.occupation,
+            no_of_brothers=1,
+            brothers_married=None,
+            no_of_sisters=1,
+            sisters_married=None,
+            ancestral_origin='Parsi',
+            about_family='Middle class family staying in Bangalore'
+        )
+        self.profile.spoken_languages.set([self.language, self.language2])
+
+        # Other models
+        self.interest = models.Interest.objects.create(
+            from_profile=self.profile, to_profile=self.profile2, status='s')
+
     def test_marital_status_str(self):
         self.assertEqual(str(self.marital_status), self.marital_status.name)
 
@@ -161,47 +250,11 @@ class ModelTests(TestCase):
         self.assertEqual(str(self.family_status), self.family_status.name)
 
     def test_profile_str(self):
-        profile = models.Profile.objects.create(
-            user=get_user_model().objects.create(
-                username='9876543210', password='test',
-                email='test@example.com'
-            ),
-            dob=datetime.strptime('1995-08-11', '%Y-%m-%d').date(),
-            about='Software Engineer working in Bangalore',
-            height=182,
-            weight=70,
-            marital_status=self.marital_status,
-            mother_tongue=self.language,
-            physical_status=self.physical_status,
-            created_by=self.created_by,
-            eating_habit=self.eating_habit,
-            drinking_habit=self.drinking_habit,
-            smoking_habit=self.smoking_habit,
-            education=self.education,
-            education_institution='CMS College of Science and Commerce',
-            occupation=self.occupation,
-            occupation_in_detail='Software Programmer',
-            organization='Spi Global',
-            employed_in=self.employed_in,
-            currency_type=self.currency_type,
-            annual_income=10,
-            country=self.country,
-            state=self.state,
-            city=self.city,
-            citizenship=self.country,
-            family_value=self.family_value,
-            family_type=self.family_type,
-            family_status=self.family_status,
-            father_occupation=self.occupation,
-            mother_occupation=self.occupation,
-            no_of_brothers=1,
-            brothers_married=None,
-            no_of_sisters=1,
-            sisters_married=None,
-            ancestral_origin='Parsi',
-            about_family='Middle class family staying in Bangalore'
+        self.assertEqual(str(self.profile), self.profile.about)
+
+    def test_interest_str(self):
+        self.assertEqual(
+            str(self.interest),
+            f"{self.interest.from_profile}-{self.interest.to_profile}-"
+            f"{self.interest.status}"
         )
-
-        profile.spoken_languages.set([self.language, self.language2])
-
-        self.assertEqual(str(profile), profile.about)

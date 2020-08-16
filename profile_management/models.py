@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class MaritalStatus(models.Model):
@@ -205,6 +206,9 @@ class Profile(models.Model):
     about = models.TextField()
     height = models.IntegerField()
     weight = models.IntegerField()
+    gender = models.CharField(max_length=1,
+                              choices=(('m', _('Male')), ('f', _('Female'))),
+                              blank=False, null=False)
     marital_status = models.ForeignKey(
         MaritalStatus, on_delete=models.CASCADE,
         related_name='marital_status_profile_set')
@@ -325,3 +329,21 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.about
+
+
+class Interest(models.Model):
+    objects = models.Manager()
+    from_profile = models.ForeignKey(Profile, on_delete=models.CASCADE,
+                                     related_name='from_profile_profile_set')
+    to_profile = models.ForeignKey(Profile, on_delete=models.CASCADE,
+                                   related_name='to_profile_profile_set')
+    status = models.CharField(max_length=1,
+                              choices=(
+                                  ('s', _('Sent')),
+                                  ('a', _('Accepted')),
+                                  ('r', _('Rejected'))
+                              ),
+                              blank=False, null=False)
+
+    def __str__(self):
+        return f"{self.from_profile}-{self.to_profile}-{self.status}"
