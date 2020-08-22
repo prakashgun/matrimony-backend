@@ -1,10 +1,17 @@
 from rest_framework.serializers import ModelSerializer
 
-from .models import Profile
+from . import models
 
 
 class ProfileSerializer(ModelSerializer):
     class Meta:
-        model = Profile
+        model = models.Profile
+        read_only_fields = ('id',)
+        fields = '__all__'
+
+
+class InterestSerializer(ModelSerializer):
+    class Meta:
+        model = models.Interest
         read_only_fields = ('id',)
         fields = '__all__'

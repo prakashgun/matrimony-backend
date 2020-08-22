@@ -345,5 +345,8 @@ class Interest(models.Model):
                               ),
                               blank=False, null=False)
 
+    class Meta:
+        unique_together = ('from_profile', 'to_profile')
+
     def __str__(self):
         return f"{self.from_profile}-{self.to_profile}-{self.status}"

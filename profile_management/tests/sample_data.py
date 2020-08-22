@@ -30,6 +30,11 @@ class Utilities:
         return reverse('profile_management:profile-detail', args=[profile_id])
 
     @staticmethod
+    def interest_detail_url(interest_id):
+        return reverse('profile_management:interest-detail',
+                       args=[interest_id])
+
+    @staticmethod
     def profile_defaults(user, api_post=False):
         marital_status = models.MaritalStatus.objects.create(
             name="Never Married"
@@ -117,16 +122,20 @@ class Utilities:
             "height": 182,
             "weight": 70,
             "gender": "m",
-            "marital_status": marital_status.id if api_post else marital_status,
+            "marital_status": marital_status.id if api_post
+            else marital_status,
             "mother_tongue": language.id if api_post else language,
-            "physical_status": physical_status.id if api_post else physical_status,
+            "physical_status": physical_status.id if api_post
+            else physical_status,
             "body_type": body_type.id if api_post else body_type,
             "complexion": complexion.id if api_post else complexion,
             "created_by": created_by.id if api_post else created_by,
             "eating_habit": eating_habit.id if api_post else eating_habit,
-            "drinking_habit": drinking_habit.id if api_post else drinking_habit,
+            "drinking_habit": drinking_habit.id if api_post
+            else drinking_habit,
             "smoking_habit": smoking_habit.id if api_post else smoking_habit,
-            "religion": religion.id if api_post else religion,
+            "religion": religion.id if api_post
+            else religion,
             "caste": caste.id if api_post else caste,
             "star": star.id if api_post else star,
             "raasi": raasi.id if api_post else raasi,

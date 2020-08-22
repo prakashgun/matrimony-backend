@@ -1,7 +1,7 @@
 from rest_framework import viewsets, mixins
+from rest_framework.permissions import IsAuthenticated
 
-from . import models
-from . import serializers
+from . import models, serializers, permissions
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -17,4 +17,10 @@ class InterestViewSet(mixins.CreateModelMixin,
                       mixins.UpdateModelMixin,
                       mixins.DestroyModelMixin,
                       viewsets.GenericViewSet):
+    serializer_class = serializers.InterestSerializer
+    permission_classes = (
+        IsAuthenticated,
+        permissions.IsInterestReceiverOrReadOnly,
+        permissions.IsOwnInterestOrDisallow
+    )
     queryset = models.Interest.objects.all()
