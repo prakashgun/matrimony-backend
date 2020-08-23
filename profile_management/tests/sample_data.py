@@ -8,7 +8,7 @@ from .. import models
 
 class Utilities:
     PROFILES_URL = reverse('profile_management:profile-list')
-    INTEREST_URL = reverse('profile_management:interest-list')
+    INTERESTS_URL = reverse('profile_management:interest-list')
     SHORTLISTS_URL = reverse('profile_management:shortlist-list')
 
     @staticmethod

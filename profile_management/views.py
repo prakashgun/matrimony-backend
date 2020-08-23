@@ -1,4 +1,5 @@
-from rest_framework import viewsets, mixins
+from django.db.models import Q
+from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
 from . import models, serializers, permissions
@@ -12,11 +13,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
         return self.queryset.order_by('-id')
 
 
-class InterestViewSet(mixins.CreateModelMixin,
-                      mixins.RetrieveModelMixin,
-                      mixins.UpdateModelMixin,
-                      mixins.DestroyModelMixin,
-                      viewsets.GenericViewSet):
+class InterestViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.InterestSerializer
     permission_classes = (
         IsAuthenticated,
@@ -24,6 +21,12 @@ class InterestViewSet(mixins.CreateModelMixin,
         permissions.IsOwnInterestOrDisallow
     )
     queryset = models.Interest.objects.all()
+
+    def get_queryset(self):
+        return self.queryset.filter(
+            Q(from_profile__user=self.request.user) |
+            Q(to_profile__user=self.request.user)
+        ).order_by('-id')
 
 
 class ShortlistViewSet(viewsets.ModelViewSet):

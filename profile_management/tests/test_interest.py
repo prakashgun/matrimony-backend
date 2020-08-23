@@ -10,7 +10,7 @@ class PublicInterestTests(TestCase):
         self.client = APIClient()
 
     def test_list_interest_unauthenticated(self):
-        res = self.client.get(Utilities.INTEREST_URL)
+        res = self.client.get(Utilities.INTERESTS_URL)
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
@@ -37,17 +37,13 @@ class PrivateInterestTests(TestCase):
         self.profile2 = Utilities.sample_profile(self.user2, gender='f')
         self.profile3 = Utilities.sample_profile(self.user3, gender='m')
 
-    def test_listing_disabled(self):
-        self.assertEqual(self.client.get(Utilities.INTEREST_URL).status_code,
-                         status.HTTP_405_METHOD_NOT_ALLOWED)
-
     def test_interest_addition(self):
         payload = {
             "from_profile": self.profile.id,
             "to_profile": self.profile2.id,
             "status": "s"
         }
-        res = self.client.post(Utilities.INTEREST_URL, data=payload)
+        res = self.client.post(Utilities.INTERESTS_URL, data=payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
     def test_interest_cannot_be_added_more_than_once(self):
@@ -56,7 +52,7 @@ class PrivateInterestTests(TestCase):
             "to_profile": self.profile2.id,
             "status": "s"
         }
-        res = self.client.post(Utilities.INTEREST_URL, data=payload)
+        res = self.client.post(Utilities.INTERESTS_URL, data=payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
         payload = {
@@ -64,7 +60,7 @@ class PrivateInterestTests(TestCase):
             "to_profile": self.profile2.id,
             "status": "s"
         }
-        res = self.client.post(Utilities.INTEREST_URL, data=payload)
+        res = self.client.post(Utilities.INTERESTS_URL, data=payload)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_interest_receiver_can_accept_request(self):
@@ -73,7 +69,7 @@ class PrivateInterestTests(TestCase):
             "to_profile": self.profile2.id,
             "status": "s"
         }
-        res = self.client.post(Utilities.INTEREST_URL, data=payload)
+        res = self.client.post(Utilities.INTERESTS_URL, data=payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
         payload = {
@@ -92,7 +88,7 @@ class PrivateInterestTests(TestCase):
             "to_profile": self.profile2.id,
             "status": "s"
         }
-        res = self.client.post(Utilities.INTEREST_URL, data=payload)
+        res = self.client.post(Utilities.INTERESTS_URL, data=payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
         payload = {
@@ -112,7 +108,7 @@ class PrivateInterestTests(TestCase):
             "to_profile": self.profile2.id,
             "status": "s"
         }
-        res = self.client.post(Utilities.INTEREST_URL, data=payload)
+        res = self.client.post(Utilities.INTERESTS_URL, data=payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
         payload = {
@@ -124,13 +120,13 @@ class PrivateInterestTests(TestCase):
                               data=payload)
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_only_own_interests_can_be_seen(self):
+    def test_only_related_interest_detail_can_be_seen(self):
         payload = {
             "from_profile": self.profile.id,
             "to_profile": self.profile2.id,
             "status": "s"
         }
-        res = self.client.post(Utilities.INTEREST_URL, data=payload)
+        res = self.client.post(Utilities.INTERESTS_URL, data=payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
         self.client.force_authenticate(self.profile2.user)
@@ -139,4 +135,26 @@ class PrivateInterestTests(TestCase):
 
         self.client.force_authenticate(self.profile3.user)
         res = self.client.get(Utilities.interest_detail_url(res.data['id']))
-        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_only_related_interests_list_can_be_seen(self):
+        payload = {
+            "from_profile": self.profile.id,
+            "to_profile": self.profile2.id,
+            'status': 's'
+        }
+        res = self.client.post(Utilities.INTERESTS_URL, data=payload)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        res = self.client.get(Utilities.INTERESTS_URL)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(res.data), 1)
+        self.assertEqual(res.data[0]['to_profile'], self.profile2.id)
+
+        self.client.force_authenticate(self.profile2.user)
+        res = self.client.get(Utilities.INTERESTS_URL)
+        self.assertEqual(len(res.data), 1)
+
+        self.client.force_authenticate(self.profile3.user)
+        res = self.client.get(Utilities.INTERESTS_URL)
+        self.assertEqual(len(res.data), 0)
