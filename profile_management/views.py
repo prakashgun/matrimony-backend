@@ -17,7 +17,7 @@ class InterestViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.InterestSerializer
     permission_classes = (
         IsAuthenticated,
-        permissions.IsInterestReceiverOrReadOnly,
+        permissions.InterestDecisionAndDelete,
     )
     queryset = models.Interest.objects.all()
     filterset_fields = ['status']
@@ -27,6 +27,14 @@ class InterestViewSet(viewsets.ModelViewSet):
             Q(from_profile__user=self.request.user) |
             Q(to_profile__user=self.request.user)
         ).order_by('-id')
+
+    def get_serializer_class(self):
+        serializer_class = self.serializer_class
+
+        if self.request.method == 'PUT':
+            serializer_class = serializers.InterestAcceptSerializer
+
+        return serializer_class
 
 
 class ShortlistViewSet(viewsets.ModelViewSet):

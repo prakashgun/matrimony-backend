@@ -89,6 +89,56 @@ class PrivateInterestTests(TestCase):
                               data=payload)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
+    def test_interest_receiver_cannot_change_sender(self):
+        payload = {
+            "from_profile": self.profile.id,
+            "to_profile": self.profile2.id,
+            "status": "s"
+        }
+        res = self.client.post(Utilities.INTERESTS_URL, data=payload)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        interest_id = res.data['id']
+
+        accept_payload = {
+            "from_profile": self.profile4.id,
+            "to_profile": self.profile2.id,
+            "status": "a"
+        }
+        self.client.force_authenticate(self.profile2.user)
+        res = self.client.put(
+            Utilities.interest_detail_url(interest_id=interest_id),
+            data=accept_payload)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+        res = self.client.get(
+            Utilities.interest_detail_url(interest_id=interest_id))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            res.data,
+            {
+                'id': interest_id,
+                'from_profile': payload['from_profile'],
+                'to_profile': payload['to_profile'],
+                'status': accept_payload['status']
+            }
+        )
+
+    def test_interest_sender_can_delete(self):
+        payload = {
+            "from_profile": self.profile.id,
+            "to_profile": self.profile2.id,
+            "status": "s"
+        }
+        res = self.client.post(Utilities.INTERESTS_URL, data=payload)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        interest_id = res.data['id']
+
+        res = self.client.delete(
+            Utilities.interest_detail_url(interest_id=interest_id))
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+
     def test_interest_receiver_can_reject_request(self):
         payload = {
             "from_profile": self.profile.id,

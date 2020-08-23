@@ -17,6 +17,13 @@ class InterestSerializer(ModelSerializer):
         fields = '__all__'
 
 
+class InterestAcceptSerializer(ModelSerializer):
+    class Meta:
+        model = models.Interest
+        read_only_fields = ('id', 'from_profile', 'to_profile',)
+        fields = ('status',)
+
+
 class ShortlistSerializer(ModelSerializer):
     class Meta:
         model = models.Shortlist

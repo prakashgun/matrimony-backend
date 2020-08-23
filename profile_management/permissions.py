@@ -1,15 +1,18 @@
 from rest_framework import permissions
 
 
-class IsInterestReceiverOrReadOnly(permissions.BasePermission):
+class InterestDecisionAndDelete(permissions.BasePermission):
     """
     Object-level permission to only allow interest receivers to accept it.
     """
 
     def has_object_permission(self, request, view, obj):
-        # Read permissions are allowed to any request,
-        # so we'll always allow GET, HEAD or OPTIONS requests.
+
         if request.method in permissions.SAFE_METHODS:
+            return True
+
+        if request.method == 'DELETE' and \
+                obj.from_profile.user == request.user:
             return True
 
         # Interest receiver should only accept it, no one else
