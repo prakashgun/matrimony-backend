@@ -17,7 +17,7 @@ class InterestViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.InterestSerializer
     permission_classes = (
         IsAuthenticated,
-        permissions.IsInterestReceiverOrReadOnly
+        permissions.IsInterestReceiverOrReadOnly,
     )
     queryset = models.Interest.objects.all()
 
@@ -33,7 +33,6 @@ class ShortlistViewSet(viewsets.ModelViewSet):
     queryset = models.Shortlist.objects.all()
     permission_classes = (
         IsAuthenticated,
-        permissions.IsOwnShortlistOrDisallow
     )
 
     def get_queryset(self):

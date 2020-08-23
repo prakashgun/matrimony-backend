@@ -14,12 +14,3 @@ class IsInterestReceiverOrReadOnly(permissions.BasePermission):
 
         # Interest receiver should only accept it, no one else
         return obj.to_profile.user == request.user
-
-
-class IsOwnShortlistOrDisallow(permissions.BasePermission):
-    """
-    Object-level permission to see only own shortlists
-    """
-
-    def has_object_permission(self, request, view, obj):
-        return obj.from_profile.user == request.user
