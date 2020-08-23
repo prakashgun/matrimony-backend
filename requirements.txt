@@ -4,3 +4,4 @@ gunicorn
 flake8
 djangorestframework
 django-oauth-toolkit
+django-filter

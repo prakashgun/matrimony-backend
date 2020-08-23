@@ -20,6 +20,7 @@ class InterestViewSet(viewsets.ModelViewSet):
         permissions.IsInterestReceiverOrReadOnly,
     )
     queryset = models.Interest.objects.all()
+    filterset_fields = ['status']
 
     def get_queryset(self):
         return self.queryset.filter(

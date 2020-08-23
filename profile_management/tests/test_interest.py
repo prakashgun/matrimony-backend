@@ -31,11 +31,18 @@ class PrivateInterestTests(TestCase):
             password='test3',
             email='test3@example.com'
         )
+
+        self.user4 = Utilities.sample_user(
+            username='1234511111',
+            password='test4',
+            email='test4@example.com'
+        )
         self.client.force_authenticate(self.user)
 
         self.profile = Utilities.sample_profile(self.user, gender='m')
         self.profile2 = Utilities.sample_profile(self.user2, gender='f')
-        self.profile3 = Utilities.sample_profile(self.user3, gender='m')
+        self.profile3 = Utilities.sample_profile(self.user3, gender='f')
+        self.profile4 = Utilities.sample_profile(self.user4, gender='m')
 
     def test_interest_addition(self):
         payload = {
@@ -158,3 +165,65 @@ class PrivateInterestTests(TestCase):
         self.client.force_authenticate(self.profile3.user)
         res = self.client.get(Utilities.INTERESTS_URL)
         self.assertEqual(len(res.data), 0)
+
+    def test_sent_interests_list(self):
+        payload = {
+            "from_profile": self.profile.id,
+            "to_profile": self.profile2.id,
+            "status": "s"
+        }
+        res = self.client.post(Utilities.INTERESTS_URL, data=payload)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        payload = {
+            "from_profile": self.profile.id,
+            "to_profile": self.profile3.id,
+            "status": "s"
+        }
+        res = self.client.post(Utilities.INTERESTS_URL, data=payload)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        payload = {
+            "from_profile": self.profile3.id,
+            "to_profile": self.profile4.id,
+            "status": "s"
+        }
+        res = self.client.post(Utilities.INTERESTS_URL, data=payload)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        res = self.client.get(Utilities.INTERESTS_URL)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(res.data), 2)
+
+    def test_accepted_interests_list(self):
+        payload = {
+            "from_profile": self.profile.id,
+            "to_profile": self.profile2.id,
+            "status": "s"
+        }
+        res = self.client.post(Utilities.INTERESTS_URL, data=payload)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        payload = {
+            "from_profile": self.profile.id,
+            "to_profile": self.profile2.id,
+            "status": "a"
+        }
+        self.client.force_authenticate(self.profile2.user)
+        res = self.client.put(Utilities.interest_detail_url(res.data['id']),
+                              data=payload)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+        payload = {
+            "from_profile": self.profile.id,
+            "to_profile": self.profile3.id,
+            "status": "s"
+        }
+        self.client.force_authenticate(self.profile.user)
+
+        res = self.client.post(Utilities.INTERESTS_URL, data=payload)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        res = self.client.get(f"{Utilities.INTERESTS_URL}?status=a")
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(res.data), 1)
