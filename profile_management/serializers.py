@@ -15,3 +15,10 @@ class InterestSerializer(ModelSerializer):
         model = models.Interest
         read_only_fields = ('id',)
         fields = '__all__'
+
+
+class ShortlistSerializer(ModelSerializer):
+    class Meta:
+        model = models.Shortlist
+        read_only_fields = ('id',)
+        fields = '__all__'

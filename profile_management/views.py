@@ -24,3 +24,16 @@ class InterestViewSet(mixins.CreateModelMixin,
         permissions.IsOwnInterestOrDisallow
     )
     queryset = models.Interest.objects.all()
+
+
+class ShortlistViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.ShortlistSerializer
+    queryset = models.Shortlist.objects.all()
+    permission_classes = (
+        IsAuthenticated,
+        permissions.IsOwnShortlistOrDisallow
+    )
+
+    def get_queryset(self):
+        return self.queryset.filter(from_profile__user=self.request.user) \
+            .order_by('-id')

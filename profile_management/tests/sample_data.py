@@ -9,6 +9,7 @@ from .. import models
 class Utilities:
     PROFILES_URL = reverse('profile_management:profile-list')
     INTEREST_URL = reverse('profile_management:interest-list')
+    SHORTLISTS_URL = reverse('profile_management:shortlist-list')
 
     @staticmethod
     def create_user(**params):
@@ -33,6 +34,11 @@ class Utilities:
     def interest_detail_url(interest_id):
         return reverse('profile_management:interest-detail',
                        args=[interest_id])
+
+    @staticmethod
+    def shortlist_detail_url(shortlist_id):
+        return reverse('profile_management:shortlist-detail',
+                       args=[shortlist_id])
 
     @staticmethod
     def profile_defaults(user, api_post=False):
@@ -178,6 +184,19 @@ class Utilities:
 
     @staticmethod
     def sample_interest():
+        user1 = Utilities.sample_user()
+        user2 = Utilities.sample_user(
+            username='0123456789',
+            password='test2',
+            email='test2@example.com'
+        )
+        profile1 = Utilities.sample_profile(user1, gender='m')
+        profile2 = Utilities.sample_profile(user2, gender='f')
+        return models.Interest.objects.create(from_profile=profile1,
+                                              to_profile=profile2, status='s')
+
+    @staticmethod
+    def sample_shortlist():
         user1 = Utilities.sample_user()
         user2 = Utilities.sample_user(
             username='0123456789',
