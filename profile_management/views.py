@@ -1,6 +1,7 @@
 from django.db.models import Q
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
 
 from . import models, serializers, permissions
 
@@ -20,6 +21,7 @@ class InterestViewSet(viewsets.ModelViewSet):
         permissions.InterestDecisionAndDelete,
     )
     queryset = models.Interest.objects.all()
+    filter_backends = [DjangoFilterBackend]
     filterset_fields = ['status']
 
     def get_queryset(self):
