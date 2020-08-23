@@ -16,17 +16,6 @@ class IsInterestReceiverOrReadOnly(permissions.BasePermission):
         return obj.to_profile.user == request.user
 
 
-class IsOwnInterestOrDisallow(permissions.BasePermission):
-    """
-    Object-level permission to see only sent or received interests
-    """
-
-    def has_object_permission(self, request, view, obj):
-        # Interest receiver should only accept it, no one else
-        return (obj.to_profile.user == request.user) or (
-                obj.to_profile.user == request.user)
-
-
 class IsOwnShortlistOrDisallow(permissions.BasePermission):
     """
     Object-level permission to see only own shortlists
