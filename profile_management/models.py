@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class MaritalStatus(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -12,7 +12,7 @@ class MaritalStatus(models.Model):
 
 
 class Language(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -20,7 +20,7 @@ class Language(models.Model):
 
 
 class PhysicalStatus(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -28,7 +28,7 @@ class PhysicalStatus(models.Model):
 
 
 class BodyType(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -36,7 +36,7 @@ class BodyType(models.Model):
 
 
 class Complexion(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -44,7 +44,7 @@ class Complexion(models.Model):
 
 
 class CreatedBy(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -52,7 +52,7 @@ class CreatedBy(models.Model):
 
 
 class EatingHabit(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -60,7 +60,7 @@ class EatingHabit(models.Model):
 
 
 class DrinkingHabit(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -68,7 +68,7 @@ class DrinkingHabit(models.Model):
 
 
 class SmokingHabit(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -76,7 +76,7 @@ class SmokingHabit(models.Model):
 
 
 class Religion(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -84,7 +84,7 @@ class Religion(models.Model):
 
 
 class Caste(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     religion = models.ForeignKey(Religion, on_delete=models.CASCADE)
     objects = models.Manager()
 
@@ -93,7 +93,7 @@ class Caste(models.Model):
 
 
 class Star(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -101,7 +101,7 @@ class Star(models.Model):
 
 
 class Raasi(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -109,7 +109,7 @@ class Raasi(models.Model):
 
 
 class Dosham(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -117,7 +117,7 @@ class Dosham(models.Model):
 
 
 class Education(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -125,7 +125,7 @@ class Education(models.Model):
 
 
 class Occupation(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -133,7 +133,7 @@ class Occupation(models.Model):
 
 
 class EmployedIn(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -141,7 +141,7 @@ class EmployedIn(models.Model):
 
 
 class CurrencyType(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -149,7 +149,7 @@ class CurrencyType(models.Model):
 
 
 class Country(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -157,7 +157,7 @@ class Country(models.Model):
 
 
 class State(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     objects = models.Manager()
 
@@ -166,7 +166,7 @@ class State(models.Model):
 
 
 class City(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     state = models.ForeignKey(State, on_delete=models.CASCADE)
     objects = models.Manager()
 
@@ -175,7 +175,7 @@ class City(models.Model):
 
 
 class FamilyValue(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -183,7 +183,7 @@ class FamilyValue(models.Model):
 
 
 class FamilyType(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -191,7 +191,7 @@ class FamilyType(models.Model):
 
 
 class FamilyStatus(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     objects = models.Manager()
 
     def __str__(self):

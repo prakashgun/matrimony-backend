@@ -1,260 +1,189 @@
-from datetime import datetime
-
-from django.contrib.auth import get_user_model
 from django.test import TestCase
 
+from .sample_data import Utilities
 from .. import models
 
 
 class ModelTests(TestCase):
 
-    def setUp(self):
-        self.marital_status = models.MaritalStatus.objects.create(
+    def test_marital_status_str(self):
+        marital_status = models.MaritalStatus.objects.create(
             name="Never Married"
         )
-        self.language = models.Language.objects.create(
-            name="Malayalam"
-        )
-        self.language2 = models.Language.objects.create(
-            name="English"
-        )
-        self.physical_status = models.PhysicalStatus.objects.create(
-            name="Normal"
-        )
-        self.body_type = models.BodyType.objects.create(
-            name="Slim"
-        )
-        self.complexion = models.Complexion.objects.create(
-            name="Fair"
-        )
-        self.created_by = models.CreatedBy.objects.create(
-            name="Self"
-        )
-        self.eating_habit = models.EatingHabit.objects.create(
-            name="Vegetarian"
-        )
-        self.drinking_habit = models.DrinkingHabit.objects.create(
-            name="Non Drinker"
-        )
-        self.smoking_habit = models.SmokingHabit.objects.create(
-            name="Non Smoker"
-        )
-        self.religion = models.Religion.objects.create(
-            name="Hindu"
-        )
-        self.caste = models.Caste.objects.create(
-            religion=self.religion,
-            name="Ezhava"
-        )
-        self.star = models.Star.objects.create(
-            name="Aswathi"
-        )
-        self.raasi = models.Raasi.objects.create(
-            name="Medam"
-        )
-        self.dosham = models.Dosham.objects.create(
-            name="No"
-        )
-        self.education = models.Education.objects.create(
-            name="BE"
-        )
-        self.occupation = models.Occupation.objects.create(
-            name="Software Professional"
-        )
-        self.employed_in = models.EmployedIn.objects.create(
-            name="Private"
-        )
-        self.currency_type = models.CurrencyType.objects.create(
-            name="Rs."
-        )
-        self.country = models.Country.objects.create(
-            name="India"
-        )
-        self.state = models.State.objects.create(
-            country=self.country,
-            name="Tamil Nadu"
-        )
-        self.city = models.City.objects.create(
-            state=self.state,
-            name="Coimbatore"
-        )
-        self.family_value = models.FamilyValue.objects.create(
-            name="Liberal"
-        )
-        self.family_type = models.FamilyType.objects.create(
-            name="Nuclear Family"
-        )
-        self.family_status = models.FamilyStatus.objects.create(
-            name="Middle Class"
-        )
-
-        self.profile = models.Profile.objects.create(
-            user=get_user_model().objects.create(
-                username='0123456789', password='test2',
-                email='test2@example.com'
-            ),
-            dob=datetime.strptime('1995-08-11', '%Y-%m-%d').date(),
-            about='Manager in Chennai',
-            height=182,
-            weight=70,
-            gender='m',
-            marital_status=self.marital_status,
-            mother_tongue=self.language,
-            physical_status=self.physical_status,
-            created_by=self.created_by,
-            eating_habit=self.eating_habit,
-            drinking_habit=self.drinking_habit,
-            smoking_habit=self.smoking_habit,
-            education=self.education,
-            education_institution='IIM',
-            occupation=self.occupation,
-            occupation_in_detail='Manager',
-            organization='Infosys',
-            employed_in=self.employed_in,
-            currency_type=self.currency_type,
-            annual_income=10,
-            country=self.country,
-            state=self.state,
-            city=self.city,
-            citizenship=self.country,
-            family_value=self.family_value,
-            family_type=self.family_type,
-            family_status=self.family_status,
-            father_occupation=self.occupation,
-            mother_occupation=self.occupation,
-            no_of_brothers=1,
-            brothers_married=None,
-            no_of_sisters=1,
-            sisters_married=None,
-            ancestral_origin='Parsi',
-            about_family='Middle class family staying in Chennai'
-        )
-
-        self.profile2 = models.Profile.objects.create(
-            user=get_user_model().objects.create(
-                username='9876543210', password='test',
-                email='test@example.com'
-            ),
-            dob=datetime.strptime('1995-08-11', '%Y-%m-%d').date(),
-            about='Software Engineer working in Bangalore',
-            height=182,
-            weight=70,
-            gender='f',
-            marital_status=self.marital_status,
-            mother_tongue=self.language,
-            physical_status=self.physical_status,
-            created_by=self.created_by,
-            eating_habit=self.eating_habit,
-            drinking_habit=self.drinking_habit,
-            smoking_habit=self.smoking_habit,
-            education=self.education,
-            education_institution='CMS College of Science and Commerce',
-            occupation=self.occupation,
-            occupation_in_detail='Software Programmer',
-            organization='Spi Global',
-            employed_in=self.employed_in,
-            currency_type=self.currency_type,
-            annual_income=10,
-            country=self.country,
-            state=self.state,
-            city=self.city,
-            citizenship=self.country,
-            family_value=self.family_value,
-            family_type=self.family_type,
-            family_status=self.family_status,
-            father_occupation=self.occupation,
-            mother_occupation=self.occupation,
-            no_of_brothers=1,
-            brothers_married=None,
-            no_of_sisters=1,
-            sisters_married=None,
-            ancestral_origin='Parsi',
-            about_family='Middle class family staying in Bangalore'
-        )
-        self.profile.spoken_languages.set([self.language, self.language2])
-
-        # Other models
-        self.interest = models.Interest.objects.create(
-            from_profile=self.profile, to_profile=self.profile2, status='s')
-
-    def test_marital_status_str(self):
-        self.assertEqual(str(self.marital_status), self.marital_status.name)
+        self.assertEqual(str(marital_status), marital_status.name)
 
     def test_language_str(self):
-        self.assertEqual(str(self.language), self.language.name)
+        language = models.Language.objects.create(
+            name="Malayalam"
+        )
+        self.assertEqual(str(language), language.name)
 
     def test_physical_status_str(self):
-        self.assertEqual(str(self.physical_status), self.physical_status.name)
+        physical_status = models.PhysicalStatus.objects.create(
+            name="Normal"
+        )
+        self.assertEqual(str(physical_status), physical_status.name)
 
     def test_body_type_str(self):
-        self.assertEqual(str(self.body_type), self.body_type.name)
+        body_type = models.BodyType.objects.create(
+            name="Slim"
+        )
+        self.assertEqual(str(body_type), body_type.name)
 
     def test_complexion_str(self):
-        self.assertEqual(str(self.complexion), self.complexion.name)
+        complexion = models.Complexion.objects.create(
+            name="Fair"
+        )
+        self.assertEqual(str(complexion), complexion.name)
 
     def test_created_by_str(self):
-        self.assertEqual(str(self.created_by), self.created_by.name)
+        created_by = models.CreatedBy.objects.create(
+            name="Self"
+        )
+        self.assertEqual(str(created_by), created_by.name)
 
     def test_eating_habit_str(self):
-        self.assertEqual(str(self.eating_habit), self.eating_habit.name)
+        eating_habit = models.EatingHabit.objects.create(
+            name="Vegetarian"
+        )
+        self.assertEqual(str(eating_habit), eating_habit.name)
 
     def test_drinking_habit_str(self):
-        self.assertEqual(str(self.drinking_habit), self.drinking_habit.name)
+        drinking_habit = models.DrinkingHabit.objects.create(
+            name="Non Drinker"
+        )
+        self.assertEqual(str(drinking_habit), drinking_habit.name)
 
     def test_smoking_habit_str(self):
-        self.assertEqual(str(self.smoking_habit), self.smoking_habit.name)
+        smoking_habit = models.SmokingHabit.objects.create(
+            name="Non Smoker"
+        )
+        self.assertEqual(str(smoking_habit), smoking_habit.name)
 
     def test_religion_str(self):
-        self.assertEqual(str(self.religion), self.religion.name)
+        religion = models.Religion.objects.create(
+            name="Hindu"
+        )
+        self.assertEqual(str(religion), religion.name)
 
     def test_caste_str(self):
-        self.assertEqual(str(self.caste), self.caste.name)
+        religion = models.Religion.objects.create(
+            name="Hindu"
+        )
+        caste = models.Caste.objects.create(
+            religion=religion,
+            name="Ezhava"
+        )
+        self.assertEqual(str(caste), caste.name)
 
     def test_star_str(self):
-        self.assertEqual(str(self.star), self.star.name)
+        star = models.Star.objects.create(
+            name="Aswathi"
+        )
+        self.assertEqual(str(star), star.name)
 
     def test_raasi_str(self):
-        self.assertEqual(str(self.raasi), self.raasi.name)
+        raasi = models.Raasi.objects.create(
+            name="Medam"
+        )
+        self.assertEqual(str(raasi), raasi.name)
 
     def test_dosham_str(self):
-        self.assertEqual(str(self.dosham), self.dosham.name)
+        dosham = models.Dosham.objects.create(
+            name="No"
+        )
+        self.assertEqual(str(dosham), dosham.name)
 
     def test_education_str(self):
-        self.assertEqual(str(self.education), self.education.name)
+        education = models.Education.objects.create(
+            name="BE"
+        )
+        self.assertEqual(str(education), education.name)
 
     def test_occupation_str(self):
-        self.assertEqual(str(self.occupation), self.occupation.name)
+        occupation = models.Occupation.objects.create(
+            name="Software Professional"
+        )
+        self.assertEqual(str(occupation), occupation.name)
 
     def test_employed_in_str(self):
-        self.assertEqual(str(self.employed_in), self.employed_in.name)
+        employed_in = models.EmployedIn.objects.create(
+            name="Private"
+        )
+        self.assertEqual(str(employed_in), employed_in.name)
 
     def test_currency_type_str(self):
-        self.assertEqual(str(self.currency_type), self.currency_type.name)
+        currency_type = models.CurrencyType.objects.create(
+            name="Rs."
+        )
+        self.assertEqual(str(currency_type), currency_type.name)
 
     def test_country_str(self):
-        self.assertEqual(str(self.country), self.country.name)
+        country = models.Country.objects.create(
+            name="India"
+        )
+        self.assertEqual(str(country), country.name)
 
     def test_state_str(self):
-        self.assertEqual(str(self.state), self.state.name)
+        country = models.Country.objects.create(
+            name="India"
+        )
+        state = models.State.objects.create(
+            country=country,
+            name="Tamil Nadu"
+        )
+        self.assertEqual(str(state), state.name)
 
     def test_city_str(self):
-        self.assertEqual(str(self.city), self.city.name)
+        country = models.Country.objects.create(
+            name="India"
+        )
+        state = models.State.objects.create(
+            country=country,
+            name="Tamil Nadu"
+        )
+        city = models.City.objects.create(
+            state=state,
+            name="Coimbatore"
+        )
+        self.assertEqual(str(city), city.name)
 
     def test_family_value_str(self):
-        self.assertEqual(str(self.family_value), self.family_value.name)
+        family_value = models.FamilyValue.objects.create(
+            name="Liberal"
+        )
+        self.assertEqual(str(family_value), family_value.name)
 
     def test_family_type_str(self):
-        self.assertEqual(str(self.family_type), self.family_type.name)
+        family_type = models.FamilyType.objects.create(
+            name="Nuclear Family"
+        )
+        self.assertEqual(str(family_type), family_type.name)
 
     def test_family_status_str(self):
-        self.assertEqual(str(self.family_status), self.family_status.name)
+        family_status = models.FamilyStatus.objects.create(
+            name="Middle Class"
+        )
+        self.assertEqual(str(family_status), family_status.name)
 
     def test_profile_str(self):
-        self.assertEqual(str(self.profile), self.profile.about)
+        user = Utilities.sample_user()
+        profile = Utilities.sample_profile(user=user)
+        self.assertEqual(str(profile), profile.about)
 
     def test_interest_str(self):
+        user1 = Utilities.sample_user()
+        user2 = Utilities.sample_user(
+            username='0123456789',
+            password='test2',
+            email='test2@example.com'
+        )
+        profile1 = Utilities.sample_profile(user=user1, gender='m')
+        profile2 = Utilities.sample_profile(user=user2, gender='f')
+        interest = models.Interest.objects.create(
+            from_profile=profile1, to_profile=profile2, status='s')
         self.assertEqual(
-            str(self.interest),
-            f"{self.interest.from_profile}-{self.interest.to_profile}-"
-            f"{self.interest.status}"
+            str(interest),
+            f"{interest.from_profile}-{interest.to_profile}-"
+            f"{interest.status}"
         )

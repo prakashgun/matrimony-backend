@@ -42,82 +42,82 @@ class Utilities:
 
     @staticmethod
     def profile_defaults(user, api_post=False):
-        marital_status = models.MaritalStatus.objects.create(
+        marital_status, created = models.MaritalStatus.objects.get_or_create(
             name="Never Married"
         )
-        language = models.Language.objects.create(
+        language, created = models.Language.objects.get_or_create(
             name="Malayalam"
         )
-        language2 = models.Language.objects.create(
+        language2, created = models.Language.objects.get_or_create(
             name="English"
         )
-        physical_status = models.PhysicalStatus.objects.create(
+        physical_status, created = models.PhysicalStatus.objects.get_or_create(
             name="Normal"
         )
-        body_type = models.BodyType.objects.create(
+        body_type, created = models.BodyType.objects.get_or_create(
             name="Slim"
         )
-        complexion = models.Complexion.objects.create(
+        complexion, created = models.Complexion.objects.get_or_create(
             name="Fair"
         )
-        created_by = models.CreatedBy.objects.create(
+        created_by, created = models.CreatedBy.objects.get_or_create(
             name="Self"
         )
-        eating_habit = models.EatingHabit.objects.create(
+        eating_habit, created = models.EatingHabit.objects.get_or_create(
             name="Vegetarian"
         )
-        drinking_habit = models.DrinkingHabit.objects.create(
+        drinking_habit, created = models.DrinkingHabit.objects.get_or_create(
             name="Non Drinker"
         )
-        smoking_habit = models.SmokingHabit.objects.create(
+        smoking_habit, created = models.SmokingHabit.objects.get_or_create(
             name="Non Smoker"
         )
-        religion = models.Religion.objects.create(
+        religion, created = models.Religion.objects.get_or_create(
             name="Hindu"
         )
-        caste = models.Caste.objects.create(
+        caste, created = models.Caste.objects.get_or_create(
             religion=religion,
             name="Ezhava"
         )
-        star = models.Star.objects.create(
+        star, created = models.Star.objects.get_or_create(
             name="Aswathi"
         )
-        raasi = models.Raasi.objects.create(
+        raasi, created = models.Raasi.objects.get_or_create(
             name="Medam"
         )
-        dosham = models.Dosham.objects.create(
+        dosham, created = models.Dosham.objects.get_or_create(
             name="No"
         )
-        education = models.Education.objects.create(
+        education, created = models.Education.objects.get_or_create(
             name="BE"
         )
-        occupation = models.Occupation.objects.create(
+        occupation, created = models.Occupation.objects.get_or_create(
             name="Software Professional"
         )
-        employed_in = models.EmployedIn.objects.create(
+        employed_in, created = models.EmployedIn.objects.get_or_create(
             name="Private"
         )
-        currency_type = models.CurrencyType.objects.create(
+        currency_type, created = models.CurrencyType.objects.get_or_create(
             name="Rs."
         )
-        country = models.Country.objects.create(
+        country, created = models.Country.objects.get_or_create(
             name="India"
         )
-        state = models.State.objects.create(
+        state, created = models.State.objects.get_or_create(
             country=country,
             name="Tamil Nadu"
         )
-        city = models.City.objects.create(
+        city, created = models.City.objects.get_or_create(
             state=state,
             name="Coimbatore"
         )
-        family_value = models.FamilyValue.objects.create(
+        family_value, created = models.FamilyValue.objects.get_or_create(
             name="Liberal"
         )
-        family_type = models.FamilyType.objects.create(
+        family_type, created = models.FamilyType.objects.get_or_create(
             name="Nuclear Family"
         )
-        family_status = models.FamilyStatus.objects.create(
+        family_status, created = models.FamilyStatus.objects.get_or_create(
             name="Middle Class"
         )
 

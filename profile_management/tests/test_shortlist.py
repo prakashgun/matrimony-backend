@@ -33,37 +33,39 @@ class PrivateShortlistTests(TestCase):
         )
         self.client.force_authenticate(self.user)
 
-        self.profile = Utilities.sample_profile(self.user, gender='m')
-        self.profile2 = Utilities.sample_profile(self.user2, gender='f')
-        self.profile3 = Utilities.sample_profile(self.user3, gender='m')
-
     def test_shortlist_addition(self):
+        profile = Utilities.sample_profile(self.user, gender='m')
+        profile2 = Utilities.sample_profile(self.user2, gender='f')
         payload = {
-            "from_profile": self.profile.id,
-            "to_profile": self.profile2.id
+            "from_profile": profile.id,
+            "to_profile": profile2.id
         }
         res = self.client.post(Utilities.SHORTLISTS_URL, data=payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
     def test_shortlist_cannot_be_added_more_than_once(self):
+        profile = Utilities.sample_profile(self.user, gender='m')
+        profile2 = Utilities.sample_profile(self.user2, gender='f')
         payload = {
-            "from_profile": self.profile.id,
-            "to_profile": self.profile2.id
+            "from_profile": profile.id,
+            "to_profile": profile2.id
         }
         res = self.client.post(Utilities.SHORTLISTS_URL, data=payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
         payload = {
-            "from_profile": self.profile.id,
-            "to_profile": self.profile2.id
+            "from_profile": profile.id,
+            "to_profile": profile2.id
         }
         res = self.client.post(Utilities.SHORTLISTS_URL, data=payload)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_only_own_shortlists_can_be_seen(self):
+        profile = Utilities.sample_profile(self.user, gender='m')
+        profile2 = Utilities.sample_profile(self.user2, gender='f')
         payload = {
-            "from_profile": self.profile.id,
-            "to_profile": self.profile2.id,
+            "from_profile": profile.id,
+            "to_profile": profile2.id,
         }
         res = self.client.post(Utilities.SHORTLISTS_URL, data=payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
@@ -71,16 +73,18 @@ class PrivateShortlistTests(TestCase):
         res = self.client.get(Utilities.SHORTLISTS_URL)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(res.data), 1)
-        self.assertEqual(res.data[0]['to_profile'], self.profile2.id)
+        self.assertEqual(res.data[0]['to_profile'], profile2.id)
 
-        self.client.force_authenticate(self.profile2.user)
+        self.client.force_authenticate(profile2.user)
         res = self.client.get(Utilities.SHORTLISTS_URL)
         self.assertEqual(len(res.data), 0)
 
     def test_only_own_shortlist_detail_can_be_seen(self):
+        profile = Utilities.sample_profile(self.user, gender='m')
+        profile2 = Utilities.sample_profile(self.user2, gender='f')
         payload = {
-            "from_profile": self.profile.id,
-            "to_profile": self.profile2.id,
+            "from_profile": profile.id,
+            "to_profile": profile2.id,
         }
         res = self.client.post(Utilities.SHORTLISTS_URL, data=payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
@@ -88,14 +92,16 @@ class PrivateShortlistTests(TestCase):
         res = self.client.get(Utilities.shortlist_detail_url(res.data['id']))
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
-        self.client.force_authenticate(self.profile2.user)
+        self.client.force_authenticate(profile2.user)
         res = self.client.get(Utilities.shortlist_detail_url(res.data['id']))
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_own_shortlist_can_be_deleted(self):
+        profile = Utilities.sample_profile(self.user, gender='m')
+        profile2 = Utilities.sample_profile(self.user2, gender='f')
         payload = {
-            "from_profile": self.profile.id,
-            "to_profile": self.profile2.id,
+            "from_profile": profile.id,
+            "to_profile": profile2.id,
         }
         res = self.client.post(Utilities.SHORTLISTS_URL, data=payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)

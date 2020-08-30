@@ -1,14 +1,16 @@
 from django.db.models import Q
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from django_filters.rest_framework import DjangoFilterBackend
 
-from . import models, serializers, permissions
+from . import models, serializers, permissions, filters
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ProfileSerializer
     queryset = models.Profile.objects.all()
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = filters.ProfileFilter
 
     def get_queryset(self):
         return self.queryset.order_by('-id')
