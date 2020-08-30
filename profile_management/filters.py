@@ -13,7 +13,8 @@ class ProfileFilter(filters.FilterSet):
 
     class Meta:
         model = models.Profile
-        fields = ('gender', 'min_weight', 'max_weight', 'min_age', 'max_age')
+        fields = ('gender', 'min_weight', 'max_weight', 'min_age', 'max_age',
+                  'marital_status')
 
     def filter_min_age(self, queryset, name, value):
         return queryset.filter(

@@ -106,3 +106,22 @@ class PrivateProfileTests(TestCase):
             f"{Utilities.PROFILES_URL}?min_age=24&max_age=30")
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(res.data), 2)
+
+    def test_filter_marital_status(self):
+        marital_status1 = models.MaritalStatus.objects.create(
+            name="Never Married"
+        )
+
+        marital_status2 = models.MaritalStatus.objects.create(
+            name="Divorced"
+        )
+
+        Utilities.sample_profile(self.user, marital_status=marital_status1)
+        Utilities.sample_profile(self.user2, marital_status=marital_status2)
+        Utilities.sample_profile(self.user3, marital_status=marital_status1)
+
+        res = self.client.get(
+            f"{Utilities.PROFILES_URL}?marital_status={marital_status1.id}")
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(res.data), 2)
